@@ -12,14 +12,15 @@ Tool for setting LAN/WAN mode on riverbed servers
 	cat <<"EOF" >/etc/systemd/system/rbmode.service
 	[Unit]
 	Description=rbMode
-	After=network.target
+	Before=network-pre.target
+	Wants=network-pre.target
 
 	[Service]
 	Type=oneshot
 	ExecStart=/usr/local/sbin/rbmode <mode>
 
 	[Install]
-	WantedBy=multi-user.target
+	WantedBy=network.target
 	Alias=rbmode.service
 	EOF
 	
