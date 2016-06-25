@@ -61,7 +61,7 @@ def main():
     if args.list:
         print("""\
 Brigde mode (b):    Connects LAN and WAN port directly
-Universal mode (u): Use LAN and WAN as normal networt interfaces
+Universal mode (u): Use LAN and WAN as normal network interfaces
 Noline mode (n):    Physically disconnect both ports""")
     elif args.mode:
         if modes.has_key(args.mode):
