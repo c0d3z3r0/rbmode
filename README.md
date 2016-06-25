@@ -2,32 +2,40 @@
 
 Tool for setting LAN/WAN mode on riverbed servers
 
+## Modes
+
+* n(oline): physically disconnect ethernet
+* b(ridge): bridge interfaces (bypass mode)
+* u(niversal): use interfaces as normal network interfaces
+
 ## Installation
 
-* Copy rbmode.py to `/usr/local/sbin/rbmode` and run `chmod +x /usr/local/sbin/rbmode`
-* Load i2c-dev on boot: `echo i2c-dev >>/dev/modules`
-* Create a systemd service. Change `<mode>` to the mode you want to set on boot.
+~~~bash
+aptitude install python2
+wget https://raw.githubusercontent.com/c0d3z3r0/rbmode/master/rbmode.py
+cp rbmode.py /usr/local/sbin/rbmode
+chmod +x /usr/local/sbin/rbmode
+echo i2c-dev >>/etc/modules
 
-	~~~bash
-	cat <<"EOF" >/etc/systemd/system/rbmode.service
-	[Unit]
-	Description=rbMode
-	Before=network-pre.target
-	Wants=network-pre.target
+cat <<"EOF" >/etc/systemd/system/rbmode.service
+[Unit]
+Description=rbMode
+Before=network-pre.target
+Wants=network-pre.target
 
-	[Service]
-	Type=oneshot
-	ExecStart=/usr/local/sbin/rbmode <mode>
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/rbmode <mode>  # Change <mode> to n, b or u
 
-	[Install]
-	WantedBy=network.target
-	Alias=rbmode.service
-	EOF
+[Install]
+WantedBy=network.target
+Alias=rbmode.service
+EOF
+
+systemctl enable rbmode.service
+~~~
 	
-	systemctl enable rbmode.service
-	~~~
-	
-* Load i2c-dev and set the mode
+* Load i2c-dev and set the mode manually
 
 	~~~bash
 	modprobe i2c-dev
