@@ -29,7 +29,6 @@ ExecStart=/usr/local/sbin/rbmode <mode>  # Change <mode> to n, b or u
 
 [Install]
 WantedBy=network.target
-Alias=rbmode.service
 EOF
 
 systemctl enable rbmode.service
